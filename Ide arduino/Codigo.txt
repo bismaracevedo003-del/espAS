@@ -1,0 +1,52 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+const char* ssid = "";
+const char* password = "";
+const char* serverName = "";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+  Serial.print("Conectando a WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConectado a WiFi");
+}
+
+void loop() {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverName);
+    http.addHeader("Content-Type", "application/json");
+
+    
+    int valorADC = analogRead(34);
+    float voltaje = valorADC * (3.3 / 4095.0);
+    float lectura = voltaje * 100.0; // ahora lectura es temperatura en °C
+
+    String json = "{\"lectura\":" + String(lectura, 2) + "}";
+
+    Serial.print("Enviando: ");
+    Serial.println(json);
+
+    int httpResponseCode = http.POST(json);
+
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.print("Respuesta del servidor: ");
+      Serial.println(response);
+    } else {
+      Serial.print("Error en la petición: ");
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  } else {
+    Serial.println("WiFi desconectado");
+  }
+
+  delay(10000); // enviar cada 10 segundos
+}
