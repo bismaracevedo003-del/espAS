@@ -1,24 +1,14 @@
 from flask import Flask, request, jsonify, render_template_string
 import pymssql
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-# Cargar variables de entorno
-server = os.getenv("DB_SERVER")
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASS")
-database = os.getenv("DB_NAME")
 
 app = Flask(__name__)
 
 def get_connection():
     conn = pymssql.connect(
-        server=server,
-        user=user,
-        password=password,
-        database=database
+        server='basethepeppa.mssql.somee.com',
+        user='bismar-ac_SQLLogin_1',
+        password='uex7yg16hs',
+        database='basethepeppa'
     )
     return conn
 
@@ -42,6 +32,7 @@ def index():
         else:
             mensaje = "Por favor, ingresa un valor de lectura."
 
+    # HTML simple embebido
     html = '''
     <!DOCTYPE html>
     <html>
@@ -84,4 +75,3 @@ def insertar_lectura():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
