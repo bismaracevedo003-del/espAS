@@ -1,18 +1,14 @@
 from flask import Flask, request, jsonify, render_template_string
-import pyodbc
+import pymssql
 
 app = Flask(__name__)
 
-# Datos de conexión
-server = 'basethepeppa.mssql.somee.com'
-database = 'basethepeppa'  
-username = 'bismar-ac_SQLLogin_1'
-password = 'uex7yg16hs'
-driver = '{ODBC Driver 17 for SQL Server}'
-
 def get_connection():
-    conn = pyodbc.connect(
-        f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+    conn = pymssql.connect(
+        server='basethepeppa.mssql.somee.com',
+        user='bismar-ac_SQLLogin_1',
+        password='uex7yg16hs',
+        database='basethepeppa'
     )
     return conn
 
@@ -26,7 +22,7 @@ def index():
             try:
                 conn = get_connection()
                 cursor = conn.cursor()
-                cursor.execute("INSERT INTO Lecturas (lectura) VALUES (?)", (lectura,))
+                cursor.execute("INSERT INTO Lecturas (lectura) VALUES (%s)", (lectura,))
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -68,7 +64,7 @@ def insertar_lectura():
 
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO Lecturas (lectura) VALUES (?)", (lectura,))
+        cursor.execute("INSERT INTO Lecturas (lectura) VALUES (%s)", (lectura,))
         conn.commit()
         cursor.close()
         conn.close()
