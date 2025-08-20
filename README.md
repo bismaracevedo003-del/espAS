@@ -1,1 +1,1 @@
-API en Python (Flask) conectada a SQL Server para recibir lecturas desde un ESP32 y almacenarlas en una base de datos remota. Además, incluye ejemplos de código en Arduino IDE y un formulario web para pruebas manuales sin hardware.
+API en Python (Flask) conectada a SQL Server (hospedado en Somee) para recibir lecturas desde un ESP32 y almacenarlas en una base de datos remota. La API se ejecuta en Render, incluye ejemplos de código en Arduino IDE y un formulario web para realizar pruebas manuales sin necesidad de hardware.
